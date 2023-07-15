@@ -1,0 +1,268 @@
+Step 1. Import the necessary libraries
+import pandas as pd
+import numpy as np
+Step 2. Import the dataset from this address.
+Step 3. Assign it to a variable called wine
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data'
+wine = pd.read_csv(url)
+
+wine.head()
+1	14.23	1.71	2.43	15.6	127	2.8	3.06	.28	2.29	5.64	1.04	3.92	1065
+0	1	13.20	1.78	2.14	11.2	100	2.65	2.76	0.26	1.28	4.38	1.05	3.40	1050
+1	1	13.16	2.36	2.67	18.6	101	2.80	3.24	0.30	2.81	5.68	1.03	3.17	1185
+2	1	14.37	1.95	2.50	16.8	113	3.85	3.49	0.24	2.18	7.80	0.86	3.45	1480
+3	1	13.24	2.59	2.87	21.0	118	2.80	2.69	0.39	1.82	4.32	1.04	2.93	735
+4	1	14.20	1.76	2.45	15.2	112	3.27	3.39	0.34	1.97	6.75	1.05	2.85	1450
+Step 4. Delete the first, fourth, seventh, nineth, eleventh, thirteenth and fourteenth columns
+wine = wine.drop(wine.columns[[0,3,6,8,11,12,13]], axis = 1)
+
+wine.head()
+14.23	1.71	15.6	127	3.06	2.29	5.64
+0	13.20	1.78	11.2	100	2.76	1.28	4.38
+1	13.16	2.36	18.6	101	3.24	2.81	5.68
+2	14.37	1.95	16.8	113	3.49	2.18	7.80
+3	13.24	2.59	21.0	118	2.69	1.82	4.32
+4	14.20	1.76	15.2	112	3.39	1.97	6.75
+
+Step 5. Assign the columns as below:
+The attributes are (donated by Riccardo Leardi, riclea '@' anchem.unige.it):
+
+1)Alcohol
+2)Malic acid
+3)Ash
+4)Alcalinity of ash
+5)Magnesium
+6)Total phenols
+7)Flavanoids
+8)Nonflavanoid phenols
+9)Proanthocyanins
+10)Color intensity
+11)Hue
+12)OD280/OD315 of diluted wines
+13)Proline
+
+
+NOTE: 0th attribute is class identifier - Type of cultivator (1-3)
+wine.columns = ['alcohol', 'malic_acid', 'alcalinity_of_ash', 'magnesium', 'flavanoids', 'proanthocyanins', 'hue']
+wine.head()
+alcohol	malic_acid	alcalinity_of_ash	magnesium	flavanoids	proanthocyanins	hue
+0	13.20	1.78	11.2	100	2.76	1.28	4.38
+1	13.16	2.36	18.6	101	3.24	2.81	5.68
+2	14.37	1.95	16.8	113	3.49	2.18	7.80
+3	13.24	2.59	21.0	118	2.69	1.82	4.32
+4	14.20	1.76	15.2	112	3.39	1.97	6.75
+Step 6. Set the values of the first 3 rows from alcohol as NaN
+wine.iloc[0:3, 0] = np.nan
+wine.head()
+alcohol	malic_acid	alcalinity_of_ash	magnesium	flavanoids	proanthocyanins	hue
+0	NaN	1.78	11.2	100	2.76	1.28	4.38
+1	NaN	2.36	18.6	101	3.24	2.81	5.68
+2	NaN	1.95	16.8	113	3.49	2.18	7.80
+3	13.24	2.59	21.0	118	2.69	1.82	4.32
+4	14.20	1.76	15.2	112	3.39	1.97	6.75
+Step 7. Now set the value of the rows 3 and 4 of magnesium as NaN
+wine.iloc[2:4, 3] = np.nan
+wine.head()
+alcohol	malic_acid	alcalinity_of_ash	magnesium	flavanoids	proanthocyanins	hue
+0	NaN	1.78	11.2	100.0	2.76	1.28	4.38
+1	NaN	2.36	18.6	101.0	3.24	2.81	5.68
+2	NaN	1.95	16.8	NaN	3.49	2.18	7.80
+3	13.24	2.59	21.0	NaN	2.69	1.82	4.32
+4	14.20	1.76	15.2	112.0	3.39	1.97	6.75
+Step 8. Fill the value of NaN with the number 10 in alcohol and 100 in magnesium
+wine.alcohol.fillna(10, inplace = True)
+
+wine.magnesium.fillna(100, inplace = True)
+
+wine.head()
+alcohol	malic_acid	alcalinity_of_ash	magnesium	flavanoids	proanthocyanins	hue
+0	10.00	1.78	11.2	100.0	2.76	1.28	4.38
+1	10.00	2.36	18.6	101.0	3.24	2.81	5.68
+2	10.00	1.95	16.8	100.0	3.49	2.18	7.80
+3	13.24	2.59	21.0	100.0	2.69	1.82	4.32
+4	14.20	1.76	15.2	112.0	3.39	1.97	6.75
+Step 9. Count the number of missing values
+wine.isnull().sum()
+alcohol              0
+malic_acid           0
+alcalinity_of_ash    0
+magnesium            0
+flavanoids           0
+proanthocyanins      0
+hue                  0
+dtype: int64
+Step 10. Create an array of 10 random numbers up until 10
+random = np.random.randint(10, size = 10)
+random
+array([2, 3, 0, 5, 0, 9, 4, 0, 7, 2])
+Step 11. Use random numbers you generated as an index and assign NaN value to each of cell.
+wine.alcohol[random] = np.nan
+wine.head(10)
+alcohol	malic_acid	alcalinity_of_ash	magnesium	flavanoids	proanthocyanins	hue
+0	NaN	1.78	11.2	100.0	2.76	1.28	4.38
+1	10.00	2.36	18.6	101.0	3.24	2.81	5.68
+2	NaN	1.95	16.8	100.0	3.49	2.18	7.80
+3	NaN	2.59	21.0	100.0	2.69	1.82	4.32
+4	NaN	1.76	15.2	112.0	3.39	1.97	6.75
+5	NaN	1.87	14.6	96.0	2.52	1.98	5.25
+6	14.06	2.15	17.6	121.0	2.51	1.25	5.05
+7	NaN	1.64	14.0	97.0	2.98	1.98	5.20
+8	13.86	1.35	16.0	98.0	3.15	1.85	7.22
+9	NaN	2.16	18.0	105.0	3.32	2.38	5.75
+Step 12. How many missing values do we have?
+wine.isnull().sum()
+alcohol              7
+malic_acid           0
+alcalinity_of_ash    0
+magnesium            0
+flavanoids           0
+proanthocyanins      0
+hue                  0
+dtype: int64
+Step 13. Delete the rows that contain missing values
+wine = wine.dropna(axis = 0, how = "any")
+wine.head()
+alcohol	malic_acid	alcalinity_of_ash	magnesium	flavanoids	proanthocyanins	hue
+1	10.00	2.36	18.6	101.0	3.24	2.81	5.68
+6	14.06	2.15	17.6	121.0	2.51	1.25	5.05
+8	13.86	1.35	16.0	98.0	3.15	1.85	7.22
+10	14.12	1.48	16.8	95.0	2.43	1.57	5.00
+11	13.75	1.73	16.0	89.0	2.76	1.81	5.60
+Step 14. Print only the non-null values in alcohol
+mask = wine.alcohol.notnull()
+mask
+1      True
+6      True
+8      True
+10     True
+11     True
+12     True
+13     True
+14     True
+15     True
+16     True
+17     True
+18     True
+19     True
+20     True
+21     True
+22     True
+23     True
+24     True
+25     True
+26     True
+27     True
+28     True
+29     True
+30     True
+31     True
+32     True
+33     True
+34     True
+35     True
+36     True
+       ... 
+147    True
+148    True
+149    True
+150    True
+151    True
+152    True
+153    True
+154    True
+155    True
+156    True
+157    True
+158    True
+159    True
+160    True
+161    True
+162    True
+163    True
+164    True
+165    True
+166    True
+167    True
+168    True
+169    True
+170    True
+171    True
+172    True
+173    True
+174    True
+175    True
+176    True
+Name: alcohol, dtype: bool
+wine.alcohol[mask]
+1      10.00
+6      14.06
+8      13.86
+10     14.12
+11     13.75
+12     14.75
+13     14.38
+14     13.63
+15     14.30
+16     13.83
+17     14.19
+18     13.64
+19     14.06
+20     12.93
+21     13.71
+22     12.85
+23     13.50
+24     13.05
+25     13.39
+26     13.30
+27     13.87
+28     14.02
+29     13.73
+30     13.58
+31     13.68
+32     13.76
+33     13.51
+34     13.48
+35     13.28
+36     13.05
+       ...  
+147    13.32
+148    13.08
+149    13.50
+150    12.79
+151    13.11
+152    13.23
+153    12.58
+154    13.17
+155    13.84
+156    12.45
+157    14.34
+158    13.48
+159    12.36
+160    13.69
+161    12.85
+162    12.96
+163    13.78
+164    13.73
+165    13.45
+166    12.82
+167    13.58
+168    13.40
+169    12.20
+170    12.77
+171    14.16
+172    13.71
+173    13.40
+174    13.27
+175    13.17
+176    14.13
+Name: alcohol, dtype: float64
+Step 15. Reset the index, so it starts with 0 again
+wine = wine.reset_index(drop = True)
+wine.head()
+alcohol	malic_acid	alcalinity_of_ash	magnesium	flavanoids	proanthocyanins	hue
+0	10.00	2.36	18.6	101.0	3.24	2.81	5.68
+1	14.06	2.15	17.6	121.0	2.51	1.25	5.05
+2	13.86	1.35	16.0	98.0	3.15	1.85	7.22
+3	14.12	1.48	16.8	95.0	2.43	1.57	5.00
+4	13.75	1.73	16.0	89.0	2.76	1.81	5.60
+BONUS: Create your own question and answer it.
